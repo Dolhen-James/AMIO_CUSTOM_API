@@ -3,7 +3,6 @@ version: '3.8'
 services:
   amio-api:
     build: .
-    image: amio-custom-api:latest
     restart: unless-stopped
     ports:
       - "8000:8000" # container listens on 8000; mapped to host 8000
