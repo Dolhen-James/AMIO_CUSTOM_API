@@ -1,9 +1,16 @@
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 import time
 import random
+import os
 
 app = FastAPI()
+
+# Mount static files directory
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 
 # Natural light cycle based on the provided image:
@@ -78,3 +85,9 @@ def make_payload():
 def read_amio_api():
     """Return a natural cyclic JSON payload: 10s ambient light (~150-225), then 5s light ON (~275-310)."""
     return JSONResponse(content=make_payload())
+
+@app.get("/AMIO-API/gui")
+def gui():
+    """Serve the live graph GUI."""
+    graph_path = os.path.join(static_dir, "graph.html")
+    return FileResponse(graph_path)
