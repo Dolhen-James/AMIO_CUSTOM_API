@@ -50,17 +50,20 @@ def get_natural_value(base_value, variance=5.0):
 
 def make_payload():
     state = current_light_state()
-    ts = int(time.time() * 1000)
+    base_ts = int(time.time() * 1000)
     data = []
     motes = ["9.138", "32.131", "53.105"]
     
-    for mote in motes:
+    for idx, mote in enumerate(motes):
         if state == "ambient":
             base = AMBIENT_BASES[mote]
             value = get_natural_value(base, variance=5.0)
         else:  # light_on
             base = LIGHT_ON_BASES[mote]
             value = get_natural_value(base, variance=4.0)
+        
+        # Add slight offset to each mote's timestamp to simulate real sensor arrival times
+        ts = base_ts + random.randint(0, 100)  # 0-100ms offset
         
         data.append({
             "timestamp": ts,
