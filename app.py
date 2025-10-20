@@ -89,5 +89,14 @@ def read_amio_api():
 @app.get("/AMIO-API/gui")
 def gui():
     """Serve the live graph GUI."""
-    graph_path = os.path.join(static_dir, "graph.html")
+    # Use absolute path to ensure it works in Docker
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    graph_path = os.path.join(base_dir, "static", "graph.html")
+    
+    if not os.path.exists(graph_path):
+        return JSONResponse(
+            status_code=404,
+            content={"error": f"Graph file not found at {graph_path}"}
+        )
+    
     return FileResponse(graph_path)

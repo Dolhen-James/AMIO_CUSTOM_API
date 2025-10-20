@@ -9,6 +9,7 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app.py /app/
+COPY static/ /app/static/
 
 # switch to non-root user
 USER appuser
