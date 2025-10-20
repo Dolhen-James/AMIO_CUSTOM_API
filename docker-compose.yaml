@@ -10,7 +10,7 @@ services:
       - amio-net
 
   nginx:
-    image: nginx:1.25-alpine
+    image: nginx:latest
     restart: unless-stopped
     ports:
       - "80:80"
